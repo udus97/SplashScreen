@@ -19,13 +19,16 @@
       }
     });
 
+    //Add the created splashScreen div to the body
     $('body').append(splashScreen);
+
+    //If the splashscreen is clicked, even while the slideshow is going on, stop the slideshow
     splashScreen.click(function () {
       splashScreen.fadeOut('slow');
     });
 
     // Binding a custom event for changing the current visible text according to the contents of the textLayers array (passed as a parameter)
-    splashScreen.bind('changeText', function (e, newID) {
+    splashScreen.bind('changeText', function (e,newID) {
       // If the image that we want to show is within the boundaries of the array
       if (settings.textLayers[newID]) showText(newID)
       else splashScreen.click();
@@ -35,24 +38,24 @@
 
 
     function showText(id) {
-      var text = $('<img>', {
+      var textImage = $('<img>', {
         src: settings.textLayers[id],
         css: {
           'margin-top': promoIMG.offset().top + settings.textTopOffset
         }
       }).hide();
 
-      text.load(function () {
-        text.fadeIn('slow').delay(settings.textShowTime).fadeOut('slow', function () {
-          text.remove();
+      textImage.load(function () {
+        textImage.fadeIn('slow').delay(settings.textShowTime).fadeOut('slow', function () {
+          textImage.remove();
           splashScreen.trigger('changeText', [id + 1]);
         });
       });
-      splashScreen.append(text)
+      splashScreen.append(textImage)
 
     }
 
-    return this;
+    return $(this);
 
   }
 })(jQuery);
